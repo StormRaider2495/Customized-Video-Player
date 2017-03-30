@@ -49,10 +49,13 @@ function initializePlayer(){
     video.addEventListener('waiting',bringLoader);
     document.addEventListener('touchstart', handleTouchStart, false);
     document.addEventListener('touchend', handleTouchMove, false);
+    video.addEventListener('ended',function(){
+      video.load();
+    });
 
     $('#firstVideo').bind("contextmenu",function(){
         return false;
-        });
+     });
 }
 
 // Calling initializePlayer on DOMContentLoaded Event
@@ -278,10 +281,6 @@ function vanishLoader() {//displays controls when image is loaded
 function bringLoader() {
   loader.style.display='block';
 }
-
-video.addEventListener('ended',function(){
-  video.load();
-});
 
 //------------------------------slide to skip --------------------
 
