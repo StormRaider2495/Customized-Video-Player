@@ -13,10 +13,6 @@ var video,
     duration,
     isVideoInFullScreen;
 
-var videoLink = 'video/oceans.mp4';
-var videoPoster = 'img/oceanimage.png';
-document.addEventListener("DOMContentLoaded", initializePlayer());
-
 function initializePlayer(){
 
     video = document.getElementById("firstVideo");
@@ -57,8 +53,10 @@ function initializePlayer(){
     $('#firstVideo').bind("contextmenu",function(){
         return false;
         });
-
 }
+
+// Calling initializePlayer on DOMContentLoaded Event
+document.addEventListener("DOMContentLoaded", initializePlayer);
 
 // Play and pause function
     function vidPlay() {
@@ -129,14 +127,14 @@ function initializePlayer(){
         video.muted = true;
         muted.classList.remove("glyphicon-volume-up") ;
         muted.classList.add("glyphicon-volume-off") ;
-        volRocker.style.opacity='0.3'
+        volRocker.style.opacity='0.3';
         volRocker.disabled=true;
       } else {
-          video.muted = false;
+        video.muted = false;
         muted.classList.add("glyphicon-volume-up") ;
         muted.classList.remove("glyphicon-volume-off") ;
-          volRocker.style.opacity='1';
-          volRocker.disabled=false;
+        volRocker.style.opacity='1';
+        volRocker.disabled=false;
       }
     }
 
@@ -160,15 +158,10 @@ function initializePlayer(){
 
 
     function requestFullScreen() {
-
       var el = document.body;
-
       // Supports most browsers and their versions.
-      var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen
-      || el.mozRequestFullScreen || el.msRequestFullScreen;
-
+      var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen;
       if (requestMethod) {
-
         // Native full screen.
         requestMethod.call(el);
 
@@ -179,11 +172,10 @@ function initializePlayer(){
       document.getElementsByClassName('control-bar')[0].classList.add('go-full-screen-cotrols');
       document.getElementsByClassName('fullscreen')[0].classList.remove('glyphicon-fullscreen');
       document.getElementsByClassName('fullscreen')[0].classList.add('glyphicon-resize-full');
-      isVideoInFullScreen = true;
-      // alert("press enter");
+      isVideoInFullScreen = true;      
     }
 
-	if (document.addEventListener)
+if (document.addEventListener)
 {
     document.addEventListener('webkitfullscreenchange', exitHandler, false);
     document.addEventListener('mozfullscreenchange', exitHandler, false);
@@ -226,15 +218,13 @@ function exitHandler()
                 return false;
         }
       // --------cancel full screen-------------
-       $(document).keydown(function(e) {
-        //  console.log(e.which);
-          var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||  (document.mozFullScreen || document.webkitIsFullScreen);
-        //  console.log(e);
+       $(document).keydown(function(e) {        
+         var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||  (document.mozFullScreen || document.webkitIsFullScreen);        
          if (e.keyCode === 27) {
            console.log("is video in fullscreen"+isVideoInFullScreen);
            cancelFullScreen(document);
-         }
-    });
+         }    
+       });
 
 $(".video-wrapper").mousemove(function(){
   $(".control-bar").css({"opacity":"1"});
@@ -251,10 +241,8 @@ function isMobile (window) {
 
 }
 
-document.addEventListener("visibilitychange", function() {
-  //console.log( document.visibilityState);
-  if(document.visibilityState=="hidden" && !video.paused){
-    //console.log("minimized");
+document.addEventListener("visibilitychange", function() { 
+  if(document.visibilityState=="hidden" && !video.paused){    
     vidPlay();
   }
 });
@@ -283,49 +271,33 @@ function dragSeekbar(){
 
   });
 
-function vanishLoader() {//displays controls when image is loaded
-    console.log('Buffering stopped');
-    //buttonbar.style.opacity='1';
+function vanishLoader() {//displays controls when image is loaded  
     loader.style.display='none';
 }
 
 function bringLoader() {
-  console.log('buffering');
   loader.style.display='block';
 }
 
 video.addEventListener('ended',function(){
   video.load();
 });
+
 //------------------------------slide to skip --------------------
 
 function handleTouchStart(event) {
-    xDown = event.touches[0].clientX;
-    yDown = event.touches[0].clientY;
+    xDown = event.touches[0].clientX;   
 };
 
 function handleTouchMove(event) {
-    if (!xDown || !yDown) {
+    if (!xDown) {
         return;
     }
-
-    var xUp = event.changedTouches[0].clientX;
-    var yUp = event.changedTouches[0].clientY;
-
-    var xDiff = Math.ceil(xDown - xUp);
-    var yDiff = Math.ceil(yDown - yUp);
-
+    var xUp = event.changedTouches[0].clientX;  
+    var xDiff = Math.ceil(xDown - xUp); 
     if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
         skipPlay(-(xDiff / 15));
-
-    } else {
-        if (yDiff > 0) {
-            //console.log("left up");
-        } else {
-            //console.log("left down");
-        }
     }
     / reset values /
-    xDown = null;
-    yDown = null;
+    xDown = null;   
 };
